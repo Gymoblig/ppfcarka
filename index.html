@@ -256,17 +256,19 @@
             
             // Calculate position relative to PPF
             const ppfY = 100 - x; // For straight line PPF: x + y = 100
+            const totalProduction = x + y;
             let status, cost, desc, pointColor;
             
-            if (Math.abs(y - ppfY) < 2) {
+            if (totalProduction === 100) {
                 status = "Na HVP (Efektivní) ✅";
                 cost = "Poměr 1:1";
                 desc = "Perfektní efektivnost! Využíváte všechny zdroje optimálně. Jakékoli zvýšení jednoho statku vyžaduje snížení druhého o stejné množství.";
                 pointColor = "#27ae60";
-            } else if (y < ppfY) {
-                status = "Pod HVP (Neefektivní) ⚠️";
+            } else if (totalProduction < 100) {
+                const efficiency = Math.round((totalProduction / 100) * 100);
+                status = `Pod HVP (Neefektivní - ${efficiency}%) ⚠️`;
                 cost = "Plýtvání zdroji";
-                desc = "Mohli byste vyrábět více! Máte nevyužité zdroje nebo neefektivnost. Můžete zvýšit oba statky bez kompromisů.";
+                desc = `Mohli byste vyrábět více! Využíváte pouze ${efficiency}% kapacity. Máte nevyužité zdroje - můžete zvýšit oba statky bez kompromisů.`;
                 pointColor = "#f39c12";
             } else {
                 status = "Nad HVP (Nemožné) ❌";
